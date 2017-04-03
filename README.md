@@ -148,4 +148,6 @@ Here's some example code of a window animator:
 }
 ```
 
+## Considerations
 
+If your application already manages multiple windows, `CFANavigationWindow` may affect their operation. By default, `CFANavigationWindow` will address all members of `UIWindow` (but not any subclasses) when performing transitions and assigning the new `keyWindow`, but you can set `ignoreNonManagedWindows` to YES to ignore other existing windows.
