@@ -10,6 +10,8 @@
 
 @interface UIWindow (CFA_Private)
 
++ (void)prepareInvisibleWindowIfNeeded;
+
 @property (nonatomic, readwrite, nullable) CFANavigationWindow *cfa_navigationWindow;
 @property (nonatomic, readwrite) CFANavigationWindowLevel cfa_navigationLevel;
 

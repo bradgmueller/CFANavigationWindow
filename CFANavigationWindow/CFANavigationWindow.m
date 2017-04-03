@@ -27,6 +27,26 @@
     return nil;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [UIWindow prepareInvisibleWindowIfNeeded];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [UIWindow prepareInvisibleWindowIfNeeded];
+    }
+    return self;
+}
+
 - (NSString *)description
 {
     NSString *(^classString)(UIViewController *) = ^NSString *(UIViewController *vc) {
@@ -167,6 +187,8 @@
         return nil;
     }
     
+    [UIWindow prepareInvisibleWindowIfNeeded];
+    
     UIWindow *fromWindow = [self.windows lastObject];
     
     NSMutableArray *underlyingFromWindows = [self.windows mutableCopy];
@@ -242,6 +264,8 @@
         }
         return NO;
     }
+    
+    [UIWindow prepareInvisibleWindowIfNeeded];
     
     NSMutableArray *subWindows = [[self windows] mutableCopy];
     [subWindows removeObject:self];
@@ -336,6 +360,8 @@
         }
         return nil;
     }
+    
+    [UIWindow prepareInvisibleWindowIfNeeded];
     
     UIWindow *visibleDismissingWindow = self.windows.lastObject;
     

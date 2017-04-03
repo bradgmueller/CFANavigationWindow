@@ -21,9 +21,9 @@
 + (instancetype)sharedInvisibleWindow
 {
     static CFAInvisibleWindow *__invisibleWindow = nil;
-    if (__invisibleWindow == nil)
+    if (__invisibleWindow == nil && [[[UIApplication sharedApplication] delegate] window] != nil)
     {
-        __invisibleWindow = [[CFAInvisibleWindow alloc] initWithFrame:[[UIApplication sharedApplication] keyWindow].bounds];
+        __invisibleWindow = [[CFAInvisibleWindow alloc] initWithFrame:[[[UIApplication sharedApplication] delegate] window].bounds];
         __invisibleWindow.windowLevel = UIWindowLevelNormal - 1;
         __invisibleWindow.userInteractionEnabled = NO;
         __invisibleWindow.backgroundColor = [UIColor clearColor];
@@ -91,13 +91,18 @@
 
 #pragma mark - Switching root windows
 
++ (void)prepareInvisibleWindowIfNeeded
+{
+    [CFAInvisibleWindow sharedInvisibleWindow];
+}
+
 + (CFANavigationWindow *)cfa_replaceRootWindowWithController:(UIViewController *)controller
                                                 withAnimator:(id <CFAWindowAnimator>)animator
                                                   completion:(nullable void (^)())completion
 {
     NSParameterAssert(controller);
     
-    [CFAInvisibleWindow sharedInvisibleWindow];
+    [self prepareInvisibleWindowIfNeeded];
     
     UIWindow *rootWindow = [[[UIApplication sharedApplication] delegate] window];
     
