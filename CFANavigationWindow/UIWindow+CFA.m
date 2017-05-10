@@ -16,6 +16,9 @@
 @interface CFAInvisibleWindow : UIWindow
 @end
 
+@interface CFAInvisibleWindowController : UIViewController
+@end
+
 @implementation CFAInvisibleWindow
 
 + (instancetype)sharedInvisibleWindow
@@ -29,12 +32,48 @@
         __invisibleWindow.backgroundColor = [UIColor clearColor];
         __invisibleWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         __invisibleWindow.hidden = NO;
-        UIViewController *vc = [[UIViewController alloc] init];
+        CFAInvisibleWindowController *vc = [[CFAInvisibleWindowController alloc] init];
         vc.view.backgroundColor = [UIColor clearColor];
         vc.view.userInteractionEnabled = NO;
         __invisibleWindow.rootViewController = vc;
     }
     return __invisibleWindow;
+}
+
+@end
+
+@implementation CFAInvisibleWindowController
+
+- (UIViewController *)mainController
+{
+    UIWindow *mainAppWindow = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *topController = mainAppWindow.rootViewController;
+    
+    while(topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+    
+    return topController;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return [[self mainController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [[self mainController] shouldAutorotate];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return [[self mainController] preferredInterfaceOrientationForPresentation];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return [[self mainController] supportedInterfaceOrientations];
 }
 
 @end
